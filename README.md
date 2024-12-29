@@ -75,6 +75,16 @@ yuazhi-chat/
 - **POST /api/v1/users/login**：用户登录。
   - 请求体：{ "username": "用户名", "password": "密码" }
 
+### 获取 API 密钥
+
+要使用 `yuazhi-chat` 中的 AI 绘画助手功能，您需要获取一个有效的 API 密钥。请访问 [https://cloud.siliconflow.cn/models](https://cloud.siliconflow.cn/models) 获取密钥并将其添加到您的 `.env` 文件中。
+
+配置示例：
+
+```plaintext
+AI_API_KEY=your-api-key-here
+```
+
 ### 项目架构
 
 `yuazhi-chat` 采用现代化的架构设计，前后端分离，基于 PHP、JS、CSS 和 HTML 构建。
@@ -104,7 +114,7 @@ yuazhi-chat/
 
 ### 联系方式
 
+如有问题或建议，欢迎通过以下方式与我们联系：
+
 - **Email**: yuazhi@rjjr.cn
 - **Blog**: [rjjr.cn](https://rjjr.cn)
-
----
