@@ -1,6 +1,6 @@
 // API 配置
 export const API_CONFIG = {
-    KEY: 'sk-ttncbnpnvrqxmhiugxxucrlzrkhhpivxmdsrlrwbnmrtxwvg',
+    KEY: '#',
     URL: 'https://api.siliconflow.cn/v1/chat/completions',
     MODEL: 'ft:LoRA/Qwen/Qwen2.5-72B-Instruct:pjyxv5c8kg:yuazhifurry:nhjvzakgoawnhamepaqv-ckpt_step_16',
     MAX_TOKENS: 2000,
