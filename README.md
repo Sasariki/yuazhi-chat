@@ -91,4 +91,4 @@ yuazhi-chat/
 如有问题或建议，欢迎通过以下方式联系：
 
 - Email: yuazhi@rjjr.cn
-- Blog: [https://rjjr.cn](https://rjjr.cn)
+- Blog: [rjjr.cn](https://rjjr.cn)
