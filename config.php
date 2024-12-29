@@ -1,9 +1,9 @@
 <?php
 // 数据库配置
 $db_host = 'localhost';
-$db_name = 'chat_rjjr_cn';
-$db_user = 'chat_rjjr_cn';
-$db_pass = '7y9NE2rGehAS494M';
+$db_name = '#';
+$db_user = '#';
+$db_pass = '#';
 
 try {
     $pdo = new PDO(
