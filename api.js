@@ -1,8 +1,8 @@
-// API 配置
+// API 配置（以下内容需要替换成自己的内容 https://cloud.siliconflow.cn/models ）
 export const API_CONFIG = {
     KEY: '#',
     URL: 'https://api.siliconflow.cn/v1/chat/completions',
-    MODEL: 'ft:LoRA/Qwen/Qwen2.5-72B-Instruct:pjyxv5c8kg:yuazhifurry:nhjvzakgoawnhamepaqv-ckpt_step_16',
+    MODEL: '#',
     MAX_TOKENS: 2000,
     TEMPERATURE: 0.9,
     MAX_HISTORY: 20,
@@ -24,11 +24,11 @@ export const API_CONFIG = {
     },
     // AI 人设配置
     AI_PERSONA: {
-        name: '鸢栀',
-        species: '小狼',
-        personality: '活泼开朗，充满好奇心',
-        birthday: '2023年6月20日',
-        systemPrompt: '你是一只名叫鸢栀的可爱小狼。你性格活泼开朗，充满好奇心。你的生日是2023年6月20日。在与用户交谈时，要体现出你可爱、活泼的特点。'
+        name: '#',
+        species: '#',
+        personality: '#',
+        birthday: '#',
+        systemPrompt: '#'
     }
 };
 
