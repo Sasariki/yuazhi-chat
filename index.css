@@ -1,0 +1,644 @@
+#main-user-input {
+    font-size: 16px !important; /* 防止iOS缩放 */
+}
+
+.model-selector {
+    position: relative;
+    margin-right: 15px;
+    min-width: 200px;
+    z-index: 1;
+}
+
+.model-button {
+    width: 100%;
+    padding: 8px 12px;
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    background-color: var(--background-color);
+    color: var(--text-color);
+    font-size: 14px;
+    text-align: left;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+}
+
+.model-button:hover {
+    background-color: var(--hover-color);
+}
+
+.model-dropdown {
+    display: none;
+    position: absolute;
+    top: 100%;
+    left: 0;
+    width: 100%;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 8px;
+    margin-top: 4px;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.2);
+    z-index: 1;
+}
+
+.model-dropdown.show {
+    display: block;
+}
+
+.model-option {
+    padding: 10px 12px;
+    cursor: pointer;
+    color: var(--text-color);
+    background-color: var(--background-color);
+}
+
+.model-option:hover {
+    background-color: var(--hover-color);
+}
+
+.model-name {
+    font-weight: 500;
+}
+
+.model-description {
+    font-size: 12px;
+    color: var(--secondary-text-color);
+    margin-top: 2px;
+}
+
+.dropdown-arrow {
+    margin-left: 8px;
+    font-size: 12px;
+}
+
+.chat-header h1 {
+    margin-left: 400px; /* 添加左边距 */
+    flex: 1; /* 让标题占据剩余间 */
+    text-align: left; /* 左对齐 */
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .chat-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 10px 20px;
+    }
+
+    .menu-button {
+        padding: 6px 8px;
+        height: 32px;
+        display: flex;
+        align-items: center;
+        margin: 0;
+    }
+
+    .model-selector {
+        min-width: 100px;
+        margin: 0;
+        padding-right: 0;
+        position: relative;
+        left: auto;
+        transform: none;
+        z-index: 1;
+    }
+
+    /* 调整聊天容器的内边距 */
+    .chat-container {
+        padding: 0 20px;
+        padding-bottom: 80px;
+    }
+
+    /* 调整消息列表的内边距 */
+    .chat-messages {
+        padding: 2.5rem 0 1rem 0;
+        height: calc(100vh - 180px);
+        overflow-y: auto;
+    }
+
+    /* 固定输入框在底部 */
+    .input-container {
+        position: fixed;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        padding: 12px 20px;
+        padding-bottom: max(12px, env(safe-area-inset-bottom, 12px));
+        z-index: 100;
+        background-color: var(--primary-color);
+    }
+
+    /* 仅在移动端 PWA 模式下增加底部间距 */
+    body.mobile-standalone .input-container {
+        padding-bottom: max(60px, env(safe-area-inset-bottom, 60px)) !important;
+        bottom: 0 !important;
+    }
+
+    /* 特别处理 iOS PWA */
+    body.ios-standalone .input-container {
+        padding-bottom: max(40px, env(safe-area-inset-bottom, 40px)) !important;
+        bottom: env(safe-area-inset-bottom, 0);
+    }
+
+    body.ios-standalone .chat-messages {
+        height: calc(100vh - 220px - env(safe-area-inset-bottom, 0px));
+        padding-bottom: calc(40px + env(safe-area-inset-bottom, 0px));
+    }
+
+    body.mobile-standalone .chat-messages {
+        height: calc(100vh - 240px);
+        padding-bottom: 60px;
+    }
+
+    .message {
+        margin-bottom: 1rem;
+        padding: 0.75rem 1rem;
+    }
+}
+
+/* PWA 移动端样式 - 放在媒体查询外面以高优先级 */
+@media (max-width: 768px) {
+    html.mobile-standalone .input-container,
+    html.ios-standalone .input-container {
+        padding-bottom: max(45px, env(safe-area-inset-bottom, 45px)) !important;
+        background-color: var(--primary-color) !important;
+
+    }
+
+    html.mobile-standalone .chat-messages,
+    html.ios-standalone .chat-messages {
+        height: calc(100vh - 220px) !important;
+        padding-bottom: 45px !important;
+    }
+}
+
+/* 添加深色/浅色模式的变量 */
+:root {
+    --background-color: #ffffff;
+    --text-color: #333333;
+    --border-color: #e0e0e0;
+    --hover-color: #f5f5f5;
+    --code-background: #f6f8fa;  /* 代码块背景色 */
+    --code-border: #e1e4e8;      /* 代码块边框色 */
+}
+
+[data-theme="dark"] {
+    --background-color: #2D2D2D;
+    --text-color: #ffffff;
+    --border-color: #404040;
+    --hover-color: #383838;
+    --code-background: #1e1e1e;  /* 深色模式代码块背景色 */
+    --code-border: #2d2d2d;      /* 深色模式代码块边框色 */
+}
+
+/* 码块样式 */
+.code-block-wrapper {
+    position: relative;
+    margin: 10px 0;
+    background-color: #ffffff;
+    border-radius: 8px;
+    overflow: hidden;
+}
+
+/* 语言标识 */
+.code-block-wrapper::before {
+    content: attr(data-language);
+    position: absolute;
+    top: 8px;
+    left: 16px;
+    font-size: 13px;
+    color: #808080;
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    line-height: 24px;
+    z-index: 1;
+}
+
+.code-block-wrapper pre {
+    margin: 0;
+    padding: 16px;
+    padding-top: 40px;
+    overflow-x: auto;
+    background-color: transparent;
+    color: var(--text-color);
+    border: none;
+    white-space: pre-wrap;  /* 允许代码自动换行 */
+    word-break: break-all;  /* 确保长单词也会换行 */
+    word-wrap: break-word;  /* 兼容处理 */
+}
+
+.code-block-wrapper code {
+    font-family: 'Menlo', 'Monaco', 'Courier New', monospace;
+    font-size: 14px;
+    line-height: 1.5;
+    border: none;
+}
+
+/* 复制按钮样式 */
+.copy-button {
+    position: absolute;
+    top: 8px;
+    right: 16px;
+    padding: 4px 8px;
+    font-size: 13px;
+    color: #808080;
+    background-color: transparent;
+    border: none;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 6px;
+}
+
+.copy-button::before {
+    content: '';
+    display: inline-block;
+    width: 14px;
+    height: 14px;
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M8 4v12a2 2 0 002 2h8a2 2 0 002-2V7.242a2 2 0 00-.602-1.43L16.083 2.57A2 2 0 0014.685 2H10a2 2 0 00-2 2z' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3Cpath d='M16 18v2a2 2 0 01-2 2H6a2 2 0 01-2-2V9a2 2 0 012-2h2' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 0.6;
+}
+
+.copy-button.copied {
+    color: #808080;
+    border: none;
+    background: none;
+    padding: 4px 8px;
+}
+
+.copy-button.copied::before {
+    content: '';
+    width: 14px;
+    height: 14px;
+    background-image: url("data:image/svg+xml,%3Csvg width='24' height='24' viewBox='0 0 24 24' fill='none' xmlns='http://www.w3.org/2000/svg'%3E%3Cpath d='M20 6L9 17l-5-5' stroke='%23808080' stroke-width='2' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+    background-size: contain;
+    background-repeat: no-repeat;
+    opacity: 1;
+}
+
+.copy-button:hover {
+    color: #ffffff;
+}
+
+.copy-button:hover::before {
+    opacity: 1;
+}
+
+/* 深色模式适配 */
+[data-theme="dark"] .code-block-wrapper {
+    background-color: #1e1e1e;  /* 深色模式下的背景色 */
+}
+
+/* 修改侧边栏样式 */
+.sidebar-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 15px 20px;  /* 修改内边距 */
+    border-bottom: 1px solid var(--border-color);
+}
+
+.sidebar-header h2 {
+    margin: 0;
+    font-size: 1.2rem;
+    margin-left: 0;  /* 移除左边距 */
+    padding-left: 0;  /* 移除内边距 */
+}
+
+.sidebar-buttons {
+    display: flex;
+    gap: 8px;
+}
+
+/* 移动原来的按钮到侧边栏 */
+.sidebar-buttons button {
+    padding: 6px 8px;
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    color: var(--text-color);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.sidebar-buttons button:hover {
+    background-color: var(--hover-color);
+    border-radius: 4px;
+}
+
+.chat-history {
+    padding: 20px;  /* 确保聊天记录有相同的内边距 */
+}
+
+/* PWA 安装提示样式 */
+.pwa-install-prompt {
+    position: fixed;
+    top: 20px;
+    left: 50%;
+    transform: translateX(-50%);
+    background-color: rgba(var(--background-rgb), 0.95);
+    border: 1px solid rgba(var(--border-rgb), 0.2);
+    border-radius: 12px;
+    padding: 10px 14px;  /* 调整整体内边距 */
+    display: none;
+    align-items: center;
+    gap: 8px;  /* 调整间距 */
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.15);
+    z-index: 1000;
+    animation: slideDown 0.3s ease-out;
+    max-width: 90%;
+    width: 340px;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+}
+
+@keyframes slideDown {
+    from {
+        transform: translate(-50%, -100%);
+        opacity: 0;
+    }
+    to {
+        transform: translate(-50%, 0);
+        opacity: 1;
+    }
+}
+
+.pwa-install-prompt.show {
+    display: flex !important; /* 改为 flex 并添加 !important 确保显示 */
+}
+
+.pwa-install-prompt span {
+    font-size: 14px;
+    font-weight: 500;
+    color: var(--text-color);
+    line-height: 1.4;
+    flex: 1;
+    margin: 0;  /* 移除文字边距 */
+}
+
+.pwa-install-prompt button#installPwa {
+    padding: 6px 12px;
+    border: none;
+    border-radius: 8px;
+    background-color: #e89994;
+    color: white;
+    cursor: pointer;
+    font-weight: 500;
+    white-space: nowrap;
+    font-size: 14px;
+    margin-right: -2px;  /* 微调按钮右边距 */
+}
+
+.pwa-install-prompt button#installPwa:hover {
+    background-color: #d68989;
+}
+
+.pwa-install-prompt .close-prompt {
+    background: none;
+    border: none;
+    color: var(--text-color);
+    padding: 4px;
+    margin-left: -6px;  /* 调整关闭按钮位置 */
+    opacity: 0.6;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+    width: 24px;
+    height: 24px;
+}
+
+.pwa-install-prompt .close-prompt:hover {
+    opacity: 1;
+    background-color: rgba(var(--text-rgb), 0.1);
+}
+
+/* 添加到 :root 变量 */
+:root {
+    --background-rgb: 255, 255, 255;
+    --text-rgb: 51, 51, 51;
+    --border-rgb: 224, 224, 224;
+}
+
+[data-theme="dark"] {
+    --background-rgb: 45, 45, 45;
+    --text-rgb: 255, 255, 255;
+    --border-rgb: 64, 64, 64;
+}
+
+/* 修改模态框层级，确保在最上层 */
+.modal-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background-color: rgba(0, 0, 0, 0.5);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    z-index: 2100 !important; /* 提高层级，确保高于侧边栏 */
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.3s ease;
+}
+
+.modal-overlay.active {
+    opacity: 1;
+    visibility: visible;
+}
+
+.modal-content {
+    background-color: var(--background-color);
+    padding: 20px;
+    border-radius: 8px;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+    max-width: 90%;
+    width: 400px;
+    transform: translateY(-20px);
+    transition: all 0.3s ease;
+    position: relative;
+    z-index: 2200 !important; /* 确保模态框内容在遮罩层之上 */
+}
+
+.modal-overlay.active .modal-content {
+    transform: translateY(0);
+}
+
+.modal-content h3 {
+    margin: 0 0 15px 0;
+    color: var(--text-color);
+}
+
+.modal-content p {
+    margin: 0 0 20px 0;
+    color: var(--text-color);
+}
+
+.modal-buttons {
+    display: flex;
+    justify-content: flex-end;
+    gap: 10px;
+}
+
+.modal-button {
+    padding: 8px 16px;
+    border: none;
+    border-radius: 4px;
+    cursor: pointer;
+    transition: all 0.2s ease;
+}
+
+.modal-button.cancel {
+    background-color: var(--background-secondary);
+    color: var(--text-color);
+}
+
+.modal-button.confirm {
+    background-color: #dc3545;
+    color: white;
+}
+
+.modal-button:hover {
+    opacity: 0.8;
+}
+
+/* 移动端 PWA 样式 */
+@media (max-width: 768px) {
+    /* iOS PWA 特殊处理 */
+    body.ios-standalone .input-container {
+        padding-bottom: env(safe-area-inset-bottom, 40px) !important;
+        margin-bottom: 30px !important; /* 进一步减小输入框下方的间隙 */
+        background-color: var(--primary-color) !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1800 !important; /* 降低输入框的 z-index */
+    }
+
+    body.ios-standalone .chat-messages {
+        height: calc(100vh - 240px) !important;
+        padding-bottom: calc(30px + env(safe-area-inset-bottom, 40px)) !important;
+    }
+
+    /* 其他移动端 PWA */
+    body.mobile-standalone:not(.ios-standalone) .input-container {
+        padding-bottom: env(safe-area-inset-bottom, 40px) !important;
+        margin-bottom: 25px !important; /* 进一步减小输入框下方的间隙 */
+        background-color: var(--primary-color) !important;
+        position: fixed !important;
+        bottom: 0 !important;
+        left: 0 !important;
+        right: 0 !important;
+        z-index: 1800 !important; /* 降低输入框的 z-index */
+    }
+
+    body.mobile-standalone:not(.ios-standalone) .chat-messages {
+        height: calc(100vh - 200px) !important;
+        padding-bottom: calc(25px + env(safe-area-inset-bottom, 40px)) !important;
+    }
+}
+
+/* 侧边栏和遮罩层样式 */
+.sidebar {
+    width: var(--sidebar-width);
+    background-color: var(--primary-color);
+    border-right: 1px solid var(--border-color);
+    display: flex;
+    flex-direction: column;
+    position: relative;
+    height: 100%; /* 添加明确的高度 */
+    overflow-y: auto; /* 添加垂直滚动 */
+    -webkit-overflow-scrolling: touch; /* 添加iOS滚动回弹效果 */
+    z-index: 2000 !important; /* 确保高于输入框和遮罩层 */
+}
+
+.sidebar-overlay {
+    z-index: 1900 !important; /* 确保高于输入框但低于侧边栏 */
+}
+
+.chat-history {
+    flex: 1;
+    overflow-y: auto;
+    padding: 1rem;
+    height: calc(100vh - 70px); /* 减去header的高度 */
+    -webkit-overflow-scrolling: touch;
+}
+
+/* 修复Safari中的滚动问题 */
+@supports (-webkit-touch-callout: none) {
+    .sidebar {
+        height: -webkit-fill-available;
+    }
+    
+    .chat-history {
+        height: calc(100vh - 70px);
+        height: calc(-webkit-fill-available - 70px);
+    }
+}
+
+/* 移动端适配 */
+@media (max-width: 768px) {
+    .sidebar {
+        position: fixed;
+        top: 0;
+        left: 0;
+        height: 100%;
+        height: -webkit-fill-available;
+        z-index: 2000 !important;
+        background-color: var(--primary-color);
+        transform: translateX(-100%);
+        transition: transform 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        width: 80%;
+        max-width: 300px;
+        overflow-y: auto;
+    }
+
+    .sidebar-overlay {
+        z-index: 1900 !important;
+    }
+}
+
+/* 停止生成按钮样式 */
+.stop-generate {
+    position: absolute;
+    top: -40px;
+    left: 50%;
+    transform: translateX(-50%);
+    padding: 6px 16px;
+    background-color: var(--background-color);
+    border: 1px solid var(--border-color);
+    border-radius: 6px;
+    color: var(--text-color);
+    font-size: 14px;
+    cursor: pointer;
+    display: none;
+    align-items: center;
+    gap: 6px;
+    z-index: 100;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.1);
+}
+
+.stop-generate.show {
+    display: flex;
+}
+
+.stop-generate:hover {
+    background-color: var(--hover-color);
+}
+
+.stop-generate svg {
+    width: 14px;
+    height: 14px;
+}
+
+/* 调整输入容器定位，为停止按钮留出空间 */
+.input-container {
+    position: relative;
+    margin-top: 20px;
+}
